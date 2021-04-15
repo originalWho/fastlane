@@ -481,8 +481,18 @@ module Scan
                                     env_name: 'SCAN_NUMBER_OF_RETRIES',
                                     description: "The number of times a test can fail before scan should stop retrying",
                                     type: Integer,
-                                    default_value: 0)
-
+                                    default_value: 0),
+        FastlaneCore::ConfigItem.new(key: :redirect_stderr_to_stdout,
+                                    env_name: 'SCAN_REDIRECT_STDERR_TO_STDOUT',
+                                    description: "...",
+                                    type: Boolean,
+                                    default_value: false),
+        FastlaneCore::ConfigItem.new(key: :custom_formatter,
+                                    env_name: 'SCAN_CUSTOM_FORMATTER',
+                                    description: "...",
+                                    type: String,
+                                    optional: true,
+                                    default_value: nil)
       ]
     end
   end
