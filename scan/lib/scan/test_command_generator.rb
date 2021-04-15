@@ -99,16 +99,20 @@ module Scan
     def pipe
       pipe = ["| tee '#{xcodebuild_log_path}'"]
 
-      if Scan.config[:disable_xcpretty] || Scan.config[:output_style] == 'raw'
+      if Scan.config[:output_style] == 'raw' || Scan.config[:disable_xcpretty]
         return pipe
       end
 
+      if (custom_formatter = Scan.config[:custom_formatter])
+        return pipe << "| #{custom_formatter}"
+      end
+
       formatter = []
-      if (custom_formatter = Scan.config[:formatter])
-        if custom_formatter.end_with?(".rb")
-          formatter << "-f '#{custom_formatter}'"
+      if (custom_xcpretty_formatter = Scan.config[:formatter])
+        if custom_xcpretty_formatter.end_with?(".rb")
+          formatter << "-f '#{custom_xcpretty_formatter}'"
         else
-          formatter << "-f `#{custom_formatter}`"
+          formatter << "-f `#{custom_xcpretty_formatter}`"
         end
       elsif FastlaneCore::Env.truthy?("TRAVIS")
         formatter << "-f `xcpretty-travis-formatter`"
