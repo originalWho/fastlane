@@ -88,7 +88,11 @@ module Scan
     end
 
     def suffix
+      config = Scan.config
+
       suffix = []
+      suffix << "2>&1" if config[:redirect_stderr_to_stdout]
+
       suffix
     end
 
